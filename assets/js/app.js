@@ -13,7 +13,7 @@ const svg = d3
   .append("svg")
   .attr("width", svgWidth)
   .attr("height", svgHeight);
-
+// create chart group to bind the svg to the page
 const chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
@@ -21,27 +21,38 @@ const chartGroup = svg.append("g")
 d3.csv("./assets/data/data.csv").then(data => {
   console.log(data);
 
-  // Create a function to parse date and time
-  const parseTime = d3.timeParse("%d-%b-%Y");
-
   // Format the data
+  // Data id for state starts at 1.
+  //Data.id skips 3,7,14,43,52 and ends at 56
   data.forEach(data => {
-    data.date = parseTime(data.date);
-    data.dow_index = +data.dow_index;
-    data.smurf_sightings = +data.smurf_sightings;
+    data.poverty = +data.poverty;
+    data.povertyMoe = +data.povertyMoe;
+    data.age = +data.age;
+    data.ageMoe = +data.ageMoe;
+    data.income= +data.income;
+    data.incomeMoe= +data.incomeMoe;
+    data.healthcare= +data.healthcare;
+    data.healthcareLow= +data.healthcareLow;
+    data.healthcareHigh= +data.healthcareHigh;
+    data.obesity= +data.obesity;
+    data.obesityLow= +data.obesityLow;
+    data.obesityHigh= +data.obesityHigh;
+    data.smokes= +data.smokes;
+    data.smokesLow= +data.smokesLow;
+    data.smokesHigh= +data.smokesHigh;
   });
 
   // Create scaling functions
-  const xScale = d3.scaleTime()
-    .domain(d3.extent(data, d => d.date))
+  const xScale = d3.scaleLinear()
+    .domain([0, d3.max(data, d => d.poverty)])
     .range([0, width]);
 
   const yLinearScale1 = d3.scaleLinear()
-    .domain([0, d3.max(data, d => d.dow_index)])
+    .domain([0, d3.max(data, d => d.healthcareLow)])
     .range([height, 0]);
 
     // Create axis functions
-  const bottomAxis = d3.axisBottom(xScale).tickFormat(d3.timeFormat("%d-%b-%Y"));
+  const bottomAxis = d3.axisBottom(xScale);
   const leftAxis = d3.axisLeft(yLinearScale1);
 
   // Add x-axis
@@ -51,8 +62,6 @@ d3.csv("./assets/data/data.csv").then(data => {
 
   // Add y1-axis to the left side of the display
   chartGroup.append("g")
-    // Define the color of the axis text
-    .classed("green", true)
     .call(leftAxis);
 
     // Step 5: Create Circles
@@ -96,10 +105,10 @@ d3.csv("./assets/data/data.csv").then(data => {
           .attr("x", 0 - (height / 2))
           .attr("dy", "1em")
           .attr("class", "axisText")
-          .text("Number of Billboard 100 Hits");
+          .text("% Missing Healthcare");
 
         chartGroup.append("text")
           .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
           .attr("class", "axisText")
-          .text("Hair Metal Band Hair Length (inches)");
+          .text("% Poverty");
 }).catch(error => console.log(error));
