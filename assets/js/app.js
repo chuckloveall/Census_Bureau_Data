@@ -69,8 +69,8 @@ d3.csv("./assets/data/data.csv").then(data => {
         const circlesGroup = chartGroup.selectAll("circle")
         .data(data)
         .join("circle")
-        .attr("cx", d => xScale(d.hair_length))
-        .attr("cy", d => yLinearScale1(d.num_hits))
+        .attr("cx", d => xScale(d.poverty))
+        .attr("cy", d => yLinearScale1(d.healthcareLow))
         .attr("r", "15")
         .attr("fill", "pink")
         .attr("opacity", 0.5)
@@ -81,8 +81,8 @@ d3.csv("./assets/data/data.csv").then(data => {
         // ==============================
         const toolTip = d3.tip()
           .attr("class", "tooltip")
-          .offset([80, -60])
-          .html(d => `${d.rockband}<br>Hair length: ${d.hair_length}<br>Hits: ${d.num_hits}`);
+          .offset([80, 60])
+          .html(d => `<br>Poverty: ${d.poverty}<br>Healthcare Low: ${d.healthcareLow}`);
 
         // Step 7: Create tooltip in the chart
         // ==============================
@@ -101,7 +101,7 @@ d3.csv("./assets/data/data.csv").then(data => {
         // Create axes labels
         chartGroup.append("text")
           .attr("transform", "rotate(-90)")
-          .attr("y", 0 - margin.left + 40)
+          .attr("y", 0 - margin.left)
           .attr("x", 0 - (height / 2))
           .attr("dy", "1em")
           .attr("class", "axisText")
