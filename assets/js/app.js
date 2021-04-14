@@ -76,13 +76,16 @@ d3.csv("./assets/data/data.csv").then(data => {
         .attr("opacity", 0.5)
         .attr("stroke", "black")
         .attr("stroke-width", 1);
+        // add state abbreviation to circle
+        circlesGroup.selectAll('text').attr("x", d => xScale(d.poverty)).attr("dy",'0.35em').attr('text-anchor', 'end').text(d => d.abbr);
+
 
         // Step 6: Initialize tool tip
         // ==============================
         const toolTip = d3.tip()
-          .attr("class", "tooltip")
+          .attr("class", "d3-tip")
           .offset([80, 60])
-          .html(d => `<br>Poverty: ${d.poverty}<br>Healthcare Low: ${d.healthcareLow}`);
+          .html(d => `Poverty %: ${d.poverty}<br>Lack Healthcare %: ${d.healthcareLow}`);
 
         // Step 7: Create tooltip in the chart
         // ==============================
@@ -90,7 +93,7 @@ d3.csv("./assets/data/data.csv").then(data => {
 
         // Step 8: Create event listeners to display and hide the tooltip
         // ==============================
-        circlesGroup.on("click", function(data) {
+        circlesGroup.on("mouseenter", function(data) {
           toolTip.show(data, this);
         })
           // onmouseout event
