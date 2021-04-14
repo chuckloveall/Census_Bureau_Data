@@ -41,7 +41,7 @@ d3.csv("./assets/data/data.csv").then(data => {
     .range([height, 0]);
 
     // Create axis functions
-  const bottomAxis = d3.axisBottom(xTimeScale).tickFormat(d3.timeFormat("%d-%b-%Y"));
+  const bottomAxis = d3.axisBottom(xScale).tickFormat(d3.timeFormat("%d-%b-%Y"));
   const leftAxis = d3.axisLeft(yLinearScale1);
 
   // Add x-axis
@@ -58,10 +58,10 @@ d3.csv("./assets/data/data.csv").then(data => {
     // Step 5: Create Circles
         // ==============================
         const circlesGroup = chartGroup.selectAll("circle")
-        .data(hairData)
+        .data(data)
         .join("circle")
-        .attr("cx", d => xLinearScale(d.hair_length))
-        .attr("cy", d => yLinearScale(d.num_hits))
+        .attr("cx", d => xScale(d.hair_length))
+        .attr("cy", d => yLinearScale1(d.num_hits))
         .attr("r", "15")
         .attr("fill", "pink")
         .attr("opacity", 0.5)
@@ -102,5 +102,4 @@ d3.csv("./assets/data/data.csv").then(data => {
           .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
           .attr("class", "axisText")
           .text("Hair Metal Band Hair Length (inches)");
-      }).catch(error => console.log(error));
 }).catch(error => console.log(error));
