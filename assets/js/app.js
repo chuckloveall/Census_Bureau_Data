@@ -77,7 +77,7 @@ d3.csv("./assets/data/data.csv").then(data => {
         .attr("stroke", "black")
         .attr("stroke-width", 1);
         // add state abbreviation to circle
-        circlesGroup.selectAll('text').attr("x", d => xScale(d.poverty)).attr("dy",'0.35em').attr('text-anchor', 'end').text(d => d.abbr);
+        const textGroup=chartGroup.selectAll("#jazz").data(data).join("text").attr("x", d => xScale(d.poverty)).attr("y",d => yLinearScale1(d.healthcareLow)).attr('text-anchor', 'end').text(d => d.abbr);
 
 
         // Step 6: Initialize tool tip
