@@ -44,12 +44,14 @@ d3.csv("./assets/data/data.csv").then(data => {
 
   // Create scaling functions
   const xScale = d3.scaleLinear()
-    .domain([0, d3.max(data, d => d.poverty)])
-    .range([0, width]);
+    .domain([d3.min(data, d => d.poverty) * 0.8, d3.max(data, d => d.poverty)* 1.2 ])
+    .range([0, width])
+    .nice();
 
   const yLinearScale1 = d3.scaleLinear()
-    .domain([0, d3.max(data, d => d.healthcareLow)])
-    .range([height, 0]);
+    .domain([d3.min(data, d => d.healthcareLow)* 0.8, d3.max(data, d => d.healthcareLow)* 1.2 ])
+    .range([height, 0])
+    .nice();
 
     // Create axis functions
   const bottomAxis = d3.axisBottom(xScale);
@@ -77,7 +79,14 @@ d3.csv("./assets/data/data.csv").then(data => {
         .attr("stroke", "black")
         .attr("stroke-width", 1);
         // add state abbreviation to circle
-        const textGroup=chartGroup.selectAll("#jazz").data(data).join("text").attr("x", d => xScale(d.poverty)).attr("y",d => yLinearScale1(d.healthcareLow)).attr('text-anchor', 'end').text(d => d.abbr);
+        const textGroup=chartGroup
+        .selectAll("#jazz")
+        .data(data)
+        .join("text")
+        .attr("dx", d => xScale(d.poverty)+ 10)
+        .attr("dy",d => yLinearScale1(d.healthcareLow) + 5 )
+        .attr('text-anchor', 'end')
+        .text(d => d.abbr);
 
 
         // Step 6: Initialize tool tip
